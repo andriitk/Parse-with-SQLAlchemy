@@ -13,22 +13,24 @@ session = Session()
 
 
 def create_authors_table(data: list):
+    filt = set()
     for el in data:
-        author = Author(
-            name=el.get('author'),
-            author_link=el.get('author_link')
-        )
-        session.add(author)
+        if el.get('author') not in filt:
+            filt.add(el.get('author'))
+            author = Author(
+                name=el.get('author'),
+                author_link=el.get('author_link')
+            )
+            session.add(author)
     session.commit()
 
 
 def create_quotes_table(data: list):
-    authors = session.query(Author.id).all()
-
-    for el, author_id in zip(data, authors):
+    for el in data:
+        author = session.query(Author).filter(Author.name == str(el.get('author'))).one()
         quote = Quote(
             title=el.get('quote'),
-            author_id=author_id.id
+            author_id=author.id
         )
         session.add(quote)
     session.commit()
