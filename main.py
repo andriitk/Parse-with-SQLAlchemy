@@ -1,9 +1,6 @@
 import requests
 from bs4 import BeautifulSoup
-from sqlalchemy.engine import create_engine
-from sqlalchemy.orm import sessionmaker
-
-from models import Authors, Quotes, Keywords, Base
+from db import create_authors_table, create_quotes_table, create_keywords_table, create_relationship_table
 
 
 def parse_data():
@@ -44,21 +41,7 @@ def parse_data():
 
 if __name__ == '__main__':
     data = parse_data()
-
-    engine = create_engine("sqlite:///my_spider_data.db")
-
-    Base.metadata.create_all(engine)
-    Base.metadata.bind = engine
-
-    Session = sessionmaker(bind=engine)
-    session = Session()
-
-    for el in data:
-        author = Authors(name=el.get('author'), author_link=el.get('author_link'))
-        session.add(author)
-        quote = Quotes(title=el.get('quote'))
-        session.add(quote)
-        keyword = Keywords(keyword=el.get('tagsforquote'))
-        session.add(author)
-
-    session.commit()
+    create_authors_table(data)
+    create_quotes_table(data)
+    create_relationship_table(data)
+    create_keywords_table(data)
