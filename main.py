@@ -43,5 +43,5 @@ if __name__ == '__main__':
     data = parse_data()
     create_authors_table(data)
     create_quotes_table(data)
-    create_relationship_table(data)
     create_keywords_table(data)
+    create_relationship_table(data)
