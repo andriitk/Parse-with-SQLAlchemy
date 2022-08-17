@@ -32,6 +32,7 @@ class Quote(Base):
     author_id = Column('author_id', Integer, ForeignKey("author.id", ondelete="CASCADE"))
     created_at = Column('created at', DateTime, default=datetime.now())
     keywords = relationship("Keyword", secondary=quote_keyword)
+    author = relationship("Author")
 
 
 class Keyword(Base):
@@ -39,10 +40,4 @@ class Keyword(Base):
     id = Column('id', Integer, primary_key=True, autoincrement=True)
     keyword = Column('keyword', String(150), nullable=False, unique=True)
     created_at = Column('created at', DateTime, default=datetime.now())
-    # quotes = relationship("Quote", secondary="quote_keyword", back_populates='keywords')
-
-# class QuoteKeyword(Base):
-#     __tablename__ = "quotekeyword"
-#     id = Column("id", Integer, primary_key=True, autoincrement=True)
-#     quote_id = Column("quote", Integer, ForeignKey("quotes.id"))
-#     keyword_id = Column("keyword", Integer, ForeignKey("keywords.id"))
+    quotes = relationship("Quote", secondary=quote_keyword)
