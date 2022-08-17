@@ -20,9 +20,10 @@ quote_keyword = Table(
 class Author(Base):
     __tablename__ = "author"
     id = Column('id', Integer, primary_key=True, autoincrement=True)
-    name = Column('full_name', String(250), nullable=False)
+    name = Column('full_name', String(250), unique=True, nullable=False)
     author_link = Column('author_link', String(150), nullable=False)
     created_at = Column('created at', DateTime, default=datetime.now())
+    quote = relationship("Quote")
 
 
 class Quote(Base):
